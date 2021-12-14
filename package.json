@@ -4,7 +4,6 @@
     "private": true,
     "dependencies": {
         "antd": "^4.17.3",
-        "axios-wings": "^0.1.6",
         "dayjs": "^1.10.7",
         "echarts": "^5.2.2",
         "react": "^16.12.0",

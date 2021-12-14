@@ -1,8 +1,7 @@
-import React from 'react';
-import logo from '../img/logo.svg';
+import React, { useState, useEffect } from 'react'
 import "src/css/App.css";
 import sourceData from '../data/source.json'
-import dayjs from 'dayjs'
+import * as echarts from 'echarts';
 
 
 //清洗数据
@@ -102,18 +101,63 @@ function compileBugType(formatedsourceData){
 }
 
 
+function renderecharts (){
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom as HTMLElement);
+    var option;
+
+    option = {
+    title: {
+        text: 'Referer of a Website',
+        subtext: 'Fake Data',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left'
+    },
+    series: [
+        {
+        name: 'Access From',
+        type: 'pie',
+        radius: '50%',
+        data: [
+            { value: 1048, name: 'Search Engine' },
+            { value: 735, name: 'Direct' },
+            { value: 580, name: 'Email' },
+            { value: 484, name: 'Union Ads' },
+            { value: 300, name: 'Video Ads' }
+        ],
+        emphasis: {
+            itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+        }
+    ]
+    };
+    option && myChart.setOption(option);
+}
 const App: React.FC = () => {
 
 
     const formatedsourceData = cleanData(sourceData);
     compileEditionBug(formatedsourceData);
     compileBugType(formatedsourceData);
-
+    useEffect(() => {
+        renderecharts();
+    });
     return (
         <div className="App">
             <div>各项目bug占比</div>
             <div>缺陷类型占比</div>
             <div>当日解决占比</div>
+            <div id='main'></div>
         </div>
     );
 
