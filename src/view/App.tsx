@@ -100,6 +100,43 @@ function compileBugType(formatedsourceData){
         return bugTypeWithNumList
 }
 
+// 统计人员类型
+function compilePersonType(formatedsourceData){
+
+        // 统计bug类型
+        const personTypeList = Array.from(new Set(formatedsourceData.map((item, index)=>{
+            return item['经办人']
+        })))
+    
+        console.log('personTypeList', personTypeList)
+    
+        // 统计版本加bug数量
+        const personTypeWithNumList = personTypeList.map((person,index)=>{
+            let formatedbugTypeItem = {
+                name: person,
+                value: 0
+            }
+    
+            formatedsourceData.forEach((item, index)=>{
+                
+                if(item['经办人'] === formatedbugTypeItem.name){
+                    formatedbugTypeItem.value++;
+                }
+    
+            })
+    
+            return formatedbugTypeItem
+    
+        })
+
+        personTypeWithNumList.sort((before,after)=>{
+            return before.value >= after.value ? -1 : 1;
+        })
+    
+        console.log('personTypeWithNumList',personTypeWithNumList)
+        return personTypeWithNumList
+}
+
 function renderEcharts (data,container:string){
     // debugger
     var chartDom = document.getElementById(container);
@@ -143,10 +180,12 @@ const App: React.FC = () => {
     const formatedsourceData = cleanData(sourceData);
     const editionBugList = compileEditionBug(formatedsourceData)
     const bugTypeWithNumList = compileBugType(formatedsourceData);
+    const personTypeWithNumList = compilePersonType(formatedsourceData);
     // debugger
     useEffect(() => {
         renderEcharts(editionBugList,'main1');
         renderEcharts(bugTypeWithNumList,'main2');
+        renderEcharts(personTypeWithNumList,'main3');
     });
     return (
         <div className="App">
