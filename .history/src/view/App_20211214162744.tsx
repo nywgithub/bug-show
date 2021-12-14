@@ -45,7 +45,7 @@ function compileEditionBug(formatedsourceData){
             }
             formatedsourceData.forEach((item, index)=>{
                 if(item['修复的版本'] === formatededitionItem.name){
-                    formatededitionItem.value++;
+                    formatededitionItem.num++;
                 }
             })
             return formatededitionItem
@@ -53,7 +53,7 @@ function compileEditionBug(formatedsourceData){
         })
         
         editionBugList.sort((before,after)=>{
-            return before.value >= after.value ? -1 : 1;
+            return before.num >= after.num ? -1 : 1;
         })
         console.log(editionBugList)
         return editionBugList
@@ -73,17 +73,17 @@ function compileBugType(formatedsourceData){
         const bugTypeWithNumList = bugTypeList.map((bugType,index)=>{
             let formatedbugTypeItem = {
                 name: bugType ===''? '未填写': bugType,
-                value: 0
+                num: 0
             }
     
             formatedsourceData.forEach((item, index)=>{
                 if(formatedbugTypeItem.name === '未填写'){
                     if(item['缺陷引入原因类型'] === ''){
-                        formatedbugTypeItem.value++;
+                        formatedbugTypeItem.num++;
                     }
                 }
                 if(item['缺陷引入原因类型'] === formatedbugTypeItem.name){
-                    formatedbugTypeItem.value++;
+                    formatedbugTypeItem.num++;
                 }
     
             })
@@ -93,16 +93,16 @@ function compileBugType(formatedsourceData){
         })
 
         bugTypeWithNumList.sort((before,after)=>{
-            return before.value >= after.value ? -1 : 1;
+            return before.num >= after.num ? -1 : 1;
         })
     
         console.log('bugTypeWithNumList',bugTypeWithNumList)
-        return bugTypeWithNumList
+
 }
 
-function renderEcharts (data,container:string){
+function renderEcharts (data){
     // debugger
-    var chartDom = document.getElementById(container);
+    var chartDom = document.getElementById('main');
     var myChart = echarts.init(chartDom as HTMLElement);
     var option;
 
@@ -141,21 +141,19 @@ const App: React.FC = () => {
 
 
     const formatedsourceData = cleanData(sourceData);
+    compileEditionBug(formatedsourceData);
+    compileBugType(formatedsourceData);
     const editionBugList = compileEditionBug(formatedsourceData)
-    const bugTypeWithNumList = compileBugType(formatedsourceData);
     // debugger
     useEffect(() => {
-        renderEcharts(editionBugList,'main1');
-        renderEcharts(bugTypeWithNumList,'main2');
+        renderEcharts(editionBugList);
     });
     return (
         <div className="App">
             <div>各项目bug占比</div>
             <div>缺陷类型占比</div>
             <div>当日解决占比</div>
-            <div id='main1'></div>
-            <div id='main2'></div>
-            <div id='main3'></div>
+            <div id='main'></div>
         </div>
     );
 

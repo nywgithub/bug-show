@@ -93,7 +93,7 @@ function compileBugType(formatedsourceData){
         })
 
         bugTypeWithNumList.sort((before,after)=>{
-            return before.value >= after.value ? -1 : 1;
+            return before.num >= after.value ? -1 : 1;
         })
     
         console.log('bugTypeWithNumList',bugTypeWithNumList)
@@ -155,7 +155,7 @@ const App: React.FC = () => {
             <div>当日解决占比</div>
             <div id='main1'></div>
             <div id='main2'></div>
-            <div id='main3'></div>
+            <div id='人员'></div>
         </div>
     );
 

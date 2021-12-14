@@ -1,11 +1,9 @@
 .App {
   text-align: center;
 }
-#main1,
-#main2,
-#main3{
+#main{
   width: 1800px;
-  height: 1800px
+  height: 500px
 }
 
 
